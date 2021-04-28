@@ -101,4 +101,6 @@ describe 'Manager Request API' do
 
     expect(request[:attributes][:status]).to eq('approved')
   end
+
+  # need sad path and edge case testing for update
 end

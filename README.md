@@ -57,6 +57,18 @@ The Township Team
 ### API DOCUMENTATION
 
 - Worker requests: GET /api/v1/workers/requests {worker_id: :id}
-- Worker requests by status: GET /api/v1/workers/requests {worker_id: :id, status: 'approved/pending/rejected'}
+- Worker Worker requests by status: GET /api/v1/workers/requests {worker_id: :id, status: 'approved/pending/rejected'}
 - Worker number of remaining vacation days: GET /api/v1/workers/remaining_vacation_days {worker_id: :id}
 - Create a new request: POST /api/v1/requests {worker_id: :id, vacation_start_date: 'datetime', vacation_end_date: 'datetime'}
+
+- Manager requests: GET /api/v1/managers/requests {manager_id: id}
+- Manager requests by status: GET /api/v1/manager/requests {manager_id: :id, status: 'approved/pending/rejected'}
+- Manager employee overview: GET /api/v1/workers/:id
+- Manager process a request: PATCH /api/v1/requests/:id {status: "approved"}
+
+### NOTES
+
+- Features to complete: Overview of overlapping requests
+- Need sad path and edge case testing for processing a request
+- Update overview of employee to include employee information
+- Use FactoryBot to clean up testing
