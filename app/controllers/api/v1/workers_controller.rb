@@ -8,4 +8,9 @@ class Api::V1::WorkersController < ApplicationController
                end
     render json: RequestSerializer.new(requests)
   end
+
+  def remaining_vacation_days
+    days = Worker.find(params[:worker_id]).remaining_vacation_days
+    render json: { remaining_vacation_days: days }
+  end
 end

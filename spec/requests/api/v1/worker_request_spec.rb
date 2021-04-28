@@ -57,4 +57,26 @@ describe 'Worker Request API' do
       expect(request[:attributes]).to have_key(:request_created_at)
     end
   end
+
+  it 'returns the number of remaining vacation days' do
+    worker = Worker.create!(name: 'Worker 1')
+    Request.create!(status: 0,
+                    vacation_start_date: '2020-08-24T00:00:00.000Z',
+                    vacation_end_date: '2020-09-04T00:00:00.000Z',
+                    worker_id: worker.id)
+    Request.create!(status: 1,
+                    vacation_start_date: '2020-08-24T00:00:00.000Z',
+                    vacation_end_date: '2020-09-04T00:00:00.000Z',
+                    worker_id: worker.id)
+    Request.create!(status: 2,
+                    vacation_start_date: '2020-08-24T00:00:00.000Z',
+                    vacation_end_date: '2020-09-04T00:00:00.000Z',
+                    worker_id: worker.id)
+
+    get remaining_vacation_days_api_v1_workers_path({ worker_id: worker.id })
+    expect(response).to be_successful
+
+    vacation_days = JSON.parse(response.body, symbolize_names: true)
+    expect(vacation_days[:remaining_vacation_days]).to eq(19.0)
+  end
 end
