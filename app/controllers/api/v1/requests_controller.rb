@@ -13,6 +13,15 @@ class Api::V1::RequestsController < ApplicationController
     end
   end
 
+  def update
+    request = Request.find(params[:id])
+    if request.update(request_params)
+      render json: RequestSerializer.new(request), status: :accepted
+    else
+      render json: { error: 'something went wrong' }, status: :not_found
+    end
+  end
+
   private
 
   def request_params

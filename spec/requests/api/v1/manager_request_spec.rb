@@ -77,4 +77,28 @@ describe 'Manager Request API' do
     expect(requests.count).to eq(2)
     expect(requests.first[:attributes][:worker_id]).to eq(@workers.first.id)
   end
+
+  it 'can process a request' do
+    @workers.each do |worker|
+      Request.create!(vacation_start_date: '2020-08-24T00:00:00.000Z',
+                      vacation_end_date: '2020-09-04T00:00:00.000Z',
+                      worker_id: worker.id,
+                      status: 0)
+    end
+
+    @workers.each do |worker|
+      Request.create!(vacation_start_date: '2020-08-24T00:00:00.000Z',
+                      vacation_end_date: '2020-09-04T00:00:00.000Z',
+                      worker_id: worker.id,
+                      status: 1)
+    end
+
+    patch api_v1_request_path({ id: Request.first.id, status: 'approved' })
+
+    expect(response).to be_successful
+
+    request = JSON.parse(response.body, symbolize_names: true)[:data]
+
+    expect(request[:attributes][:status]).to eq('approved')
+  end
 end

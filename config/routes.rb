@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       resources :managers do
         get 'requests', on: :collection
       end
-      resources :requests, only: :create
+      resources :requests, only: %i[create update]
     end
   end
 end
