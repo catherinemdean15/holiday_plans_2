@@ -52,3 +52,11 @@ Please organize, design, test, and document your code as if it were going into p
 All the best and happy coding,
 
 The Township Team
+
+
+### API DOCUMENTATION
+
+- Worker requests: GET /api/v1/workers/requests {worker_id: :id}
+- Worker requests by status: GET /api/v1/workers/requests {worker_id: :id, status: 'approved/pending/rejected'}
+- Worker number of remaining vacation days: GET /api/v1/workers/remaining_vacation_days {worker_id: :id}
+- Create a new request: POST /api/v1/requests {worker_id: :id, vacation_start_date: 'datetime', vacation_end_date: 'datetime'}
