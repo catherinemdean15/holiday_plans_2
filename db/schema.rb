@@ -10,7 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_28_142310) do
+ActiveRecord::Schema.define(version: 2021_04_28_144345) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "managers", force: :cascade do |t|
     t.string "name"
@@ -19,8 +22,8 @@ ActiveRecord::Schema.define(version: 2021_04_28_142310) do
   end
 
   create_table "managers_workers", id: false, force: :cascade do |t|
-    t.integer "manager_id"
-    t.integer "worker_id"
+    t.bigint "manager_id"
+    t.bigint "worker_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["manager_id"], name: "index_managers_workers_on_manager_id"
@@ -28,12 +31,12 @@ ActiveRecord::Schema.define(version: 2021_04_28_142310) do
   end
 
   create_table "requests", force: :cascade do |t|
-    t.integer "author_id"
     t.integer "status"
-    t.integer "resolved_by_id"
     t.datetime "vacation_start_date"
     t.datetime "vacation_end_date"
     t.datetime "request_created_at"
+    t.bigint "author_id"
+    t.bigint "resolved_by_id"
     t.index ["author_id"], name: "index_requests_on_author_id"
     t.index ["resolved_by_id"], name: "index_requests_on_resolved_by_id"
   end
@@ -44,4 +47,8 @@ ActiveRecord::Schema.define(version: 2021_04_28_142310) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "managers_workers", "managers"
+  add_foreign_key "managers_workers", "workers"
+  add_foreign_key "requests", "managers", column: "resolved_by_id"
+  add_foreign_key "requests", "workers", column: "author_id"
 end
