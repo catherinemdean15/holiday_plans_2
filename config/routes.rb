@@ -6,6 +6,7 @@ Rails.application.routes.draw do
         get 'requests', on: :collection
         get 'remaining_vacation_days', on: :collection
       end
+      resources :requests, only: :create
     end
   end
 end

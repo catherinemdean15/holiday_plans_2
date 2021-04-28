@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_28_144345) do
+ActiveRecord::Schema.define(version: 2021_04_28_160943) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,14 +31,13 @@ ActiveRecord::Schema.define(version: 2021_04_28_144345) do
   end
 
   create_table "requests", force: :cascade do |t|
-    t.integer "status"
+    t.integer "status", default: 1
     t.datetime "vacation_start_date"
     t.datetime "vacation_end_date"
     t.datetime "request_created_at"
-    t.bigint "author_id"
-    t.bigint "resolved_by_id"
-    t.index ["author_id"], name: "index_requests_on_author_id"
-    t.index ["resolved_by_id"], name: "index_requests_on_resolved_by_id"
+    t.integer "resolved_by"
+    t.bigint "worker_id"
+    t.index ["worker_id"], name: "index_requests_on_worker_id"
   end
 
   create_table "workers", force: :cascade do |t|
@@ -49,6 +48,5 @@ ActiveRecord::Schema.define(version: 2021_04_28_144345) do
 
   add_foreign_key "managers_workers", "managers"
   add_foreign_key "managers_workers", "workers"
-  add_foreign_key "requests", "managers", column: "resolved_by_id"
-  add_foreign_key "requests", "workers", column: "author_id"
+  add_foreign_key "requests", "workers"
 end

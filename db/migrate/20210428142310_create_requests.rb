@@ -5,6 +5,7 @@ class CreateRequests < ActiveRecord::Migration[5.2]
       t.datetime :vacation_start_date
       t.datetime :vacation_end_date
       t.datetime :request_created_at
+      t.integer :resolved_by
     end
   end
 end
