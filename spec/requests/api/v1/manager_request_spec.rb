@@ -53,4 +53,28 @@ describe 'Manager Request API' do
     requests = JSON.parse(response.body, symbolize_names: true)[:data]
     expect(requests.count).to eq(3)
   end
+
+  it 'gives an overview of a worker' do
+    @workers.each do |worker|
+      Request.create!(vacation_start_date: '2020-08-24T00:00:00.000Z',
+                      vacation_end_date: '2020-09-04T00:00:00.000Z',
+                      worker_id: worker.id,
+                      status: 0)
+    end
+
+    @workers.each do |worker|
+      Request.create!(vacation_start_date: '2020-08-24T00:00:00.000Z',
+                      vacation_end_date: '2020-09-04T00:00:00.000Z',
+                      worker_id: worker.id,
+                      status: 1)
+    end
+
+    get api_v1_worker_path({ id: @workers.first.id })
+
+    expect(response).to be_successful
+
+    requests = JSON.parse(response.body, symbolize_names: true)[:data]
+    expect(requests.count).to eq(2)
+    expect(requests.first[:attributes][:worker_id]).to eq(@workers.first.id)
+  end
 end
