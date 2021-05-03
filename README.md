@@ -1,4 +1,4 @@
-### Brief
+### OVERVIEW
 
 It's November, and everyone is planning their holiday vacation. But management is struggling! They need a solution to approve vacation requests while also ensuring that there are still enough employees in the office to achieve end-of-year goals.  
 
@@ -47,7 +47,6 @@ Holiday Plans is an API that allows employees to make vacation requests, and ano
 
 - Features to complete: Overview of overlapping requests
 - Need sad path and edge case testing for processing a request
-- Update overview of employee to include employee information
 - Use FactoryBot to clean up testing
 
 
