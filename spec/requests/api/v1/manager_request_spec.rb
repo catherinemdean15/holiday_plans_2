@@ -73,9 +73,13 @@ describe 'Manager Request API' do
 
     expect(response).to be_successful
 
-    requests = JSON.parse(response.body, symbolize_names: true)[:data]
-    expect(requests.count).to eq(2)
-    expect(requests.first[:attributes][:worker_id]).to eq(@workers.first.id)
+    requests = JSON.parse(response.body, symbolize_names: true)
+    expect(requests[:data][:relationships][:requests][:data].count).to eq(2)
+    expect(requests[:included].first[:attributes]).to have_key(:worker_id)
+    expect(requests[:included].first[:attributes]).to have_key(:status)
+    expect(requests[:included].first[:attributes]).to have_key(:resolved_by)
+    expect(requests[:included].first[:attributes]).to have_key(:vacation_start_date)
+    expect(requests[:included].first[:attributes]).to have_key(:vacation_end_date)
   end
 
   it 'can process a request' do

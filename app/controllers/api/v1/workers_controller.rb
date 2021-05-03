@@ -15,9 +15,7 @@ class Api::V1::WorkersController < ApplicationController
   end
 
   def show
-    # ideally should show both worker info (name), and requests
-    # use options for FastJsonapi
-    requests = Worker.find(params[:id]).requests
-    render json: RequestSerializer.new(requests)
+    worker = Worker.find(params[:id])
+    render json: WorkerSerializer.new(worker, include: [:requests])
   end
 end
