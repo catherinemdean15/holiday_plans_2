@@ -2,73 +2,56 @@
 
 It's November, and everyone is planning their holiday vacation. But management is struggling! They need a solution to approve vacation requests while also ensuring that there are still enough employees in the office to achieve end-of-year goals.  
 
-Your task is to build one HTTP API that allows employees to make vacation requests, and another that provides managers with an overview of all vacation requests and allows them to decline or approve requests.
+Holiday Plans is an API that allows employees to make vacation requests, and another that provides managers with an overview of all vacation requests and allows them to decline or approve requests.
 
-### Tasks
-
-- Implement assignment using:
-    - Language: Ruby
-    - Framework: Ruby On Rails
-- There should be API routes that allow workers to:
-    - See their requests
-        - Filter by status (approved, pending, rejected)
-    - See their number of remaining vacation days
-    - Make a new request if they have not exhausted their total limit (30 per year)
-- There should be API routes that allow managers to:
-    - See an overview of all requests
-        - Filter by pending and approved
-    - See an overview for each individual employee
-    - See an overview of overlapping requests
-    - Process an individual request and either approve or reject it
-- Write tests for your business logic
-
-Each request should, at minimum, have the following signature:
-```
-{
-  "id": ENTITY_ID,
-  "author": WORKER_ID,
-  "status": STATUS_OPTION, // may be one of: "approved", "rejected", "pending"
-  "resolved_by": MANAGER_ID,
-  "request_created_at": "2020-08-09T12:57:13.506Z",
-  "vacation_start_date" "2020-08-24T00:00:00.000Z",
-  "vacation_end_date" "2020-09-04T00:00:00.000Z",
-}
-```
-You are expected to design any other required models and routes for your API.
-
-### Evaluation Criteria
-
-- Ruby best practices
-- Completeness: Did you include all features?
-- Correctness: Does the solution perform in a logical way?
-- Maintainability: Is the solution written in a clean, maintainable way?
-- Testing: Has the solution been adequately tested?
-- Documentation: Is the API well-documented?
-
-### CodeSubmit
-
-Please organize, design, test, and document your code as if it were going into production - then push your changes to the master branch. After you have pushed your code, you must submit the assignment via the assignment page.
-
-All the best and happy coding,
-
-The Township Team
+### SCHEMA
+![Screen Shot 2021-05-03 at 10 12 39 AM](https://user-images.githubusercontent.com/69832134/116902268-2bcc9900-abf8-11eb-85e0-6f698c3d9694.png)
 
 
 ### API DOCUMENTATION
 
 - Worker requests: GET /api/v1/workers/requests {worker_id: :id}
-- Worker Worker requests by status: GET /api/v1/workers/requests {worker_id: :id, status: 'approved/pending/rejected'}
+```
+"{\"data\":[{\"id\":\"565\",\"type\":\"request\",\"attributes\":{\"worker_id\":314,\"status\":\"pending\",\"resolved_by\":null,\"vacation_start_date\":\"2020-08-24T00:00:00.000Z\",\"vacation_end_date\":\"2020-09-04T00:00:00.000Z\",\"request_created_at\":\"2021-05-03T16:15:04.402Z\"}}]}"
+```
+- Worker requests by status: GET /api/v1/workers/requests {worker_id: :id, status: 'rejected'} #status options include: approved, pending, rejected
+```
+"{\"data\":[{\"id\":\"568\",\"type\":\"request\",\"attributes\":{\"worker_id\":316,\"status\":\"rejected\",\"resolved_by\":null,\"vacation_start_date\":\"2020-08-24T00:00:00.000Z\",\"vacation_end_date\":\"2020-09-04T00:00:00.000Z\",\"request_created_at\":\"2021-05-03T16:16:16.666Z\"}},{\"id\":\"569\",\"type\":\"request\",\"attributes\":{\"worker_id\":316,\"status\":\"rejected\",\"resolved_by\":null,\"vacation_start_date\":\"2020-08-24T00:00:00.000Z\",\"vacation_end_date\":\"2020-09-04T00:00:00.000Z\",\"request_created_at\":\"2021-05-03T16:16:16.668Z\"}}]}"
+```
 - Worker number of remaining vacation days: GET /api/v1/workers/remaining_vacation_days {worker_id: :id}
+```
+{\"remaining_vacation_days\":19.0}"
+```
 - Create a new request: POST /api/v1/requests {worker_id: :id, vacation_start_date: 'datetime', vacation_end_date: 'datetime'}
-
+```
+"{\"data\":{\"id\":\"577\",\"type\":\"request\",\"attributes\":{\"worker_id\":320,\"status\":\"pending\",\"resolved_by\":null,\"vacation_start_date\":\"2020-08-24T00:00:00.000Z\",\"vacation_end_date\":\"2020-09-04T00:00:00.000Z\",\"request_created_at\":\"2021-05-03T16:19:33.461Z\"}}}"
+```
 - Manager requests: GET /api/v1/managers/requests {manager_id: id}
+```
+"{\"data\":[{\"id\":\"578\",\"type\":\"request\",\"attributes\":{\"worker_id\":321,\"status\":\"pending\",\"resolved_by\":null,\"vacation_start_date\":\"2020-08-24T00:00:00.000Z\",\"vacation_end_date\":\"2020-09-04T00:00:00.000Z\",\"request_created_at\":\"2021-05-03T16:22:35.917Z\"}},{\"id\":\"579\",\"type\":\"request\",\"attributes\":{\"worker_id\":321,\"status\":\"pending\",\"resolved_by\":null,\"vacation_start_date\":\"2020-08-24T00:00:00.000Z\",\"vacation_end_date\":\"2020-09-04T00:00:00.000Z\",\"request_created_at\":\"2021-05-03T16:22:35.920Z\"}},{\"id\":\"580\",\"type\":\"request\",\"attributes\":{\"worker_id\":322,\"status\":\"pending\",\"resolved_by\":null,\"vacation_start_date\":\"2020-08-24T00:00:00.000Z\",\"vacation_end_date\":\"2020-09-04T00:00:00.000Z\",\"request_created_at\":\"2021-05-03T16:22:35.922Z\"}},{\"id\":\"581\",\"type\":\"request\",\"attributes\":{\"worker_id\":322,\"status\":\"pending\",\"resolved_by\":null,\"vacation_start_date\":\"2020-08-24T00:00:00.000Z\",\"vacation_end_date\":\"2020-09-04T00:00:00.000Z\",\"request_created_at\":\"2021-05-03T16:22:35.924Z\"}},{\"id\":\"582\",\"type\":\"request\",\"attributes\":{\"worker_id\":323,\"status\":\"pending\",\"resolved_by\":null,\"vacation_start_date\":\"2020-08-24T00:00:00.000Z\",\"vacation_end_date\":\"2020-09-04T00:00:00.000Z\",\"request_created_at\":\"2021-05-03T16:22:35.925Z\"}},{\"id\":\"583\",\"type\":\"request\",\"attributes\":{\"worker_id\":323,\"status\":\"pending\",\"resolved_by\":null,\"vacation_start_date\":\"2020-08-24T00:00:00.000Z\",\"vacation_end_date\":\"2020-09-04T00:00:00.000Z\",\"request_created_at\":\"2021-05-03T16:22:35.927Z\"}}]}"
+```
 - Manager requests by status: GET /api/v1/manager/requests {manager_id: :id, status: 'approved/pending/rejected'}
+```
+"{\"data\":[{\"id\":\"590\",\"type\":\"request\",\"attributes\":{\"worker_id\":327,\"status\":\"approved\",\"resolved_by\":null,\"vacation_start_date\":\"2020-08-24T00:00:00.000Z\",\"vacation_end_date\":\"2020-09-04T00:00:00.000Z\",\"request_created_at\":\"2021-05-03T16:23:17.362Z\"}},{\"id\":\"591\",\"type\":\"request\",\"attributes\":{\"worker_id\":328,\"status\":\"approved\",\"resolved_by\":null,\"vacation_start_date\":\"2020-08-24T00:00:00.000Z\",\"vacation_end_date\":\"2020-09-04T00:00:00.000Z\",\"request_created_at\":\"2021-05-03T16:23:17.363Z\"}},{\"id\":\"592\",\"type\":\"request\",\"attributes\":{\"worker_id\":329,\"status\":\"approved\",\"resolved_by\":null,\"vacation_start_date\":\"2020-08-24T00:00:00.000Z\",\"vacation_end_date\":\"2020-09-04T00:00:00.000Z\",\"request_created_at\":\"2021-05-03T16:23:17.366Z\"}}]}"
+```
 - Manager employee overview: GET /api/v1/workers/:id
+```
+"{\"data\":[{\"id\":\"608\",\"type\":\"request\",\"attributes\":{\"worker_id\":336,\"status\":\"approved\",\"resolved_by\":null,\"vacation_start_date\":\"2020-08-24T00:00:00.000Z\",\"vacation_end_date\":\"2020-09-04T00:00:00.000Z\",\"request_created_at\":\"2021-05-03T16:24:09.692Z\"}},{\"id\":\"611\",\"type\":\"request\",\"attributes\":{\"worker_id\":336,\"status\":\"pending\",\"resolved_by\":null,\"vacation_start_date\":\"2020-08-24T00:00:00.000Z\",\"vacation_end_date\":\"2020-09-04T00:00:00.000Z\",\"request_created_at\":\"2021-05-03T16:24:09.697Z\"}}]}"
+```
 - Manager process a request: PATCH /api/v1/requests/:id {status: "approved"}
+```
+"{\"data\":{\"id\":\"632\",\"type\":\"request\",\"attributes\":{\"worker_id\":348,\"status\":\"approved\",\"resolved_by\":null,\"vacation_start_date\":\"2020-08-24T00:00:00.000Z\",\"vacation_end_date\":\"2020-09-04T00:00:00.000Z\",\"request_created_at\":\"2021-05-03T16:25:05.218Z\"}}}"
+```
 
-### NOTES
+### IN PROGRESS
 
 - Features to complete: Overview of overlapping requests
 - Need sad path and edge case testing for processing a request
 - Update overview of employee to include employee information
 - Use FactoryBot to clean up testing
+
+
+### NOTES
+- Chose to stray from CRUD functionality with Manager and Worker controllers to help API more closely match how the app will be utilized. CRUD functionality may have made organizing the app more simple and better for scalability. 
+- Struggled with naming the worker_id and manager_id in the requests table differently than how they are interconnected. Relationships with requests seemed to not work until the naming conventions matched
+
